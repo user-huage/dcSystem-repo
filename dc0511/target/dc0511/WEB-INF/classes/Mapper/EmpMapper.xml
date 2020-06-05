@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hx.dc.mapper.EmpMapper">
+    <resultMap id="EmpResultMap" type="emp">
+        <id column="emp_id" property="empId"/>
+        <result column="user_name" property="userName"/>
+        <result column="user_code" property="userCode"/>
+        <result column="sex" property="sex"/>
+        <result column="post_id" property="postId"/>
+        <result column="id_number" property="idNumber"/>
+        <result column="phone" property="phone"/>
+        <result column="dept_type" property="deptType"/>
+        <result column="total_name" property="totalName"/>
+        <result column="sub_name" property="subName"/>
+        <result column="post_name" property="postName"/>
+        <result column="emp_status" property="empStatus"/>
+        <result column="locks" property="locks"/>
+        <result column="dep_id" property="depId"/>
+        <result column="work_status" property="workStatus"/>
+    </resultMap>
+    <select id="queryAllEmp" resultMap="EmpResultMap" parameterType="emp">
+        SELECT * FROM emp
+        <where>
+            <if test="totalName!=null&amp;&amp;totalName!=''">and total_name=#{totalName}</if>
+            <if test="subName!=null&amp;&amp;subName!=''">and sub_name=#{subName}</if>
+            <if test="empStatus!=null&amp;&amp;empStatus!=''">and emp_status=#{empStatus}</if>
+            <if test="userName!=null&amp;&amp;userName!=''">and user_name=#{userName}</if>
+            <if test="userCode!=null&amp;&amp;userCode!=''">and userCode=#{userCode}</if>
+            <if test="idNumber!=null&amp;&amp;idNumber!=''">and id_number=#{idNumber}</if>
+            <if test="phone!=null&amp;&amp;phone!=''">and phone=#{phone}</if>
+        </where>
+    </select>
+    <select id="ajaxQueryPost" resultMap="com.hx.dc.mapper.PostMapper.PostResultMap" parameterType="emp">
+        SELECT post_id,post_name from post
+        <where>
+          <choose>
+            <when test="subName == null">total_name=#{totalName} and sub_name is null</when>
+            <when test="subName!=null">total_name=#{totalName} and sub_name=#{subName}</when>
+            <otherwise>1=0</otherwise>
+          </choose>
+        </where>;
+    </select>
+    <select id="queryEmpByUserName" parameterType="emp" resultMap="EmpResultMap">
+        SELECT * from emp where user_name=#{userName};
+    </select>
+    <insert id="addEmp">
+        INSERT into emp(user_name, user_code, sex, post_id, id_number, phone, dept_type, total_name, sub_name, post_name, emp_status, locks, dep_id, work_status)
+        VALUES
+        (#{userName},#{userCode},#{sex},#{postId},#{idNumber},#{phone},#{deptType},#{totalName}<if test="subName!=null&amp;&amp;subName!=''">sub_name=#{subName}</if>,#{postName},#{empStatus},#{locks},#{depId},#{workStatus});
+    </insert>
+    <select id="queryDeptByDeptName" parameterType="emp" resultMap="com.hx.dc.mapper.DeptMapper.DeptResultMap">
+        SELECT dep_id FROM dept
+        <where>
+            <choose>
+                <when test="subName!=null&amp;&amp;subName!=''">dep_name=#{subName}</when>
+                <when test="totalName!=null&amp;&amp;totalName!=''">dep_name=#{totalName}</when>
+            </choose>
+        </where>;
+    </select>
+</mapper>
