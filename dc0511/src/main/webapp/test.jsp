@@ -13,7 +13,6 @@
         });
     })
 </script>
-aaa
 <input id="aa" type="text" name="birthday"></input>
 </body>
 </html>
