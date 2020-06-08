@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ include file="../../common/common.jspf"%>
+<%@ include file="/common/common.jspf"%>
 <html>
 <head>
     <title>点餐系统</title>

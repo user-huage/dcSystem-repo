@@ -66,6 +66,7 @@ public class PostController {
     @RequestMapping("deletePost")
     @ResponseBody
     public Object deletePost(String postIds){
+
         String[] postIds1=postIds.split(",");
         int[] postIds2=new int[postIds1.length];
         for(int i=0;i<postIds2.length;i++){
